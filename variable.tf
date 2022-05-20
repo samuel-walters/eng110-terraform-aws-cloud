@@ -1,9 +1,11 @@
-variable "PUBLIC_KEY_PATH" {
-    description = <<DESCRIPTION
-Path to the SSH public key to be used for authentication.
-Ensure this keypair is added to your local SSH agent so provisioners can
-connect.
-Example: ~/.ssh/terraform.pub
-DESCRIPTION
-    default = "~/.ssh/eng110_cicd_sam.pub"
+variable "NODE_AMI_ID" {
+    default = "ami-0943382e114f188e8"
+}
+
+variable "AWS_KEY_NAME" {
+    default = "eng119"
+}
+
+variable "AWS_KEY_PATH" {
+    default = "~/.ssh/eng119.pem"
 }

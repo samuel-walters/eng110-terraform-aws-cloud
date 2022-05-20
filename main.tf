@@ -102,23 +102,17 @@ ingress {
   }
 }
 
-# Key path
-resource "aws_key_pair" "eng110_cicd_sam" {
-  key_name = "eng110_cicd_sam"
-  public_key = "${file(var.PUBLIC_KEY_PATH)}"
-}
-
 # Launch an ec2/server on aws
 # Let terraform know which service/resource
 
 resource "aws_instance" "app_instance" {
   # Choose an AMI to create ec2
-  ami = "ami-0943382e114f188e8"
+  ami = var.NODE_AMI_ID
         # (ubuntu 18.04LTS)
   # What type of instance to launch
   instance_type = "t2.micro"
   # Key
-  key_name = "eng119"
+  key_name = var.AWS_KEY_NAME
   # VPC
   subnet_id = "${aws_subnet.sam-subnet.id}"
   # Security group
