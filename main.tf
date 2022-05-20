@@ -2,12 +2,12 @@
 
 # First step to create block of code to communicate with AWS
 provider "aws" {
- region = "eu-west-1" 
+ region = var.REGION_AWS
 }
 
 # Launch a VPC
 resource "aws_vpc" "sam-vpc" {
-  cidr_block       = "10.0.0.0/16"
+  cidr_block       = var.VPC_CIDR
   instance_tenancy = "default"
 
   tags = {
@@ -19,9 +19,9 @@ resource "aws_vpc" "sam-vpc" {
 
 resource "aws_subnet" "sam-subnet" {
   vpc_id            = aws_vpc.sam-vpc.id
-  cidr_block        = "10.0.1.0/24"
+  cidr_block        = var.SUBNET_CIDR
   map_public_ip_on_launch = "true"
-  availability_zone = "eu-west-1a"
+  availability_zone = var.AVAILABILITY_ZONE_AWS
 
   tags = {
     Name = "sam-subnet"
@@ -73,28 +73,28 @@ resource "aws_security_group" "sam-sg"  {
     from_port       = "80"
     to_port         = "80"
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]   
+    cidr_blocks     = var.SECURITY_CIDR   
   }
 
   ingress {
     from_port       = "22"
     to_port         = "22"
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]  
+    cidr_blocks     = var.SECURITY_CIDR  
   }
 
 ingress {
-    from_port       = "3000"
-    to_port         = "3000"
+    from_port       = var.SECURITY_PORT
+    to_port         = var.SECURITY_PORT
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]  
+    cidr_blocks     = var.SECURITY_CIDR  
   }
 
   egress {
     from_port       = 0
     to_port         = 0
     protocol        = "-1" 
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = var.SECURITY_CIDR
   }
 
   tags = {
@@ -121,6 +121,4 @@ resource "aws_instance" "app_instance" {
   associate_public_ip_address = true
   # Name your instance
   tags = {Name = "eng110-sam-terraform-app"}
-
-  # attach the file.pem
 }
