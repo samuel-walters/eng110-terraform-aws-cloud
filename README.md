@@ -44,7 +44,7 @@ resource "aws_vpc" "sam-vpc" {
 
 resource "aws_network_acl" "sam-nacl" {
   vpc_id = aws_vpc.sam-vpc.id
-
+  subnet_ids = ["${aws_subnet.sam-subnet.id}"]
   egress {
     protocol   = -1
     rule_no    = 100
