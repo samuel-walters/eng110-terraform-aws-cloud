@@ -1,3 +1,11 @@
+## Diagram
+
+The below diagram details how Terraform and Ansible can be used to form IaC:
+
+![](https://i.imgur.com/ubSImc9.png)
+
+## Set Up Terraform
+
 > 1. Set your environment variables. (In windows 11: `View Advanced System Settings`, and click
 `Environment Variables`. Click `Add`, and fill in the values.)
 
