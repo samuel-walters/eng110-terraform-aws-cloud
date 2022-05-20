@@ -49,7 +49,7 @@ resource "aws_network_acl" "sam-nacl" {
     protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
+    cidr_block = var.NACL_CIDR_BLOCK
     from_port  = 0
     to_port    = 0
   }
@@ -58,7 +58,7 @@ resource "aws_network_acl" "sam-nacl" {
     protocol   = -1
     rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
+    cidr_block = var.NACL_CIDR_BLOCK
     from_port  = 0
     to_port    = 0
   }
