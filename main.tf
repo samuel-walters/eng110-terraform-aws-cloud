@@ -15,6 +15,34 @@ resource "aws_vpc" "sam-vpc" {
   }
 }
 
+# Create a Network ACL
+
+resource "aws_network_acl" "sam-nacl" {
+  vpc_id = aws_vpc.sam-vpc.id
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "sam-nacl"
+  }
+}
+
 # Launch a subnet
 
 resource "aws_subnet" "sam-subnet" {
@@ -60,7 +88,6 @@ resource "aws_route_table_association" "sam-crta-public-subnet"{
     subnet_id = "${aws_subnet.sam-subnet.id}"
     route_table_id = "${aws_route_table.sam-public-crt.id}"
 }
-
 
 # Security group
 

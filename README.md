@@ -40,6 +40,34 @@ resource "aws_vpc" "sam-vpc" {
   }
 }
 
+# Create a Network ACL
+
+resource "aws_network_acl" "sam-nacl" {
+  vpc_id = aws_vpc.sam-vpc.id
+
+  egress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  ingress {
+    protocol   = -1
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = "0.0.0.0/0"
+    from_port  = 0
+    to_port    = 0
+  }
+
+  tags = {
+    Name = "sam-nacl"
+  }
+}
+
 # Launch a subnet
 
 resource "aws_subnet" "sam-subnet" {
