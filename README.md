@@ -181,3 +181,20 @@ resource "aws_instance" "app_instance" {
 > 6. Then run `terraform plan` and then `terraform apply`. Check AWS for your newly created server.
 
 > 7. Run `terraform destroy` to shut down the instance.
+
+# Difference between pull and push configuration
+
+![](https://i.imgur.com/H4gXedC.png)
+
+There are two methods of IaC: ‘Push’ and ‘Pull’ . The main difference is the manner in which the servers are told how to be configured. In the Pull method the server to be configured will pull its configuration from the controlling server. In the Push method the controlling server pushes the configuration to the destination system.
+
+IaC tools that use the pull model often have an agent running that polls a configuration management server for the latest desired state. If the current state does not match the desired state then the agent takes corrective action. This means that in a pull model the agent is effectively a continuous delivery system. The pull model is best suited for mutable (fried) infrastructure and can be used when you have full access to the systems you're managing. Baremetal desktops and virtual machines are good examples of such systems.
+
+Tools that utilize the push model work differently. They are launched from a controller, which could be your own laptop or a CI/CD system like Jenkins. If the tool in question is declarative the controller reaches out to the systems being managed, then figures out the differences between desired state and current state and runs the commands required to reach the desired state. If the tool is imperative controller just runs commands it is told to or deploys a new pre-baked image. In any case the target systems do not need a dedicated agent to be running. The push model is often only choice when you only have limited (e.g. API) access to the system you're managing: this is the case with public Clouds and SaaS for example.
+
+Terraform is a purely push model tool. This design choice was forced over it, though, because most of the systems it manages are only available through APIs.
+
+In practice pull and push can be combined. For example, some Puppet providers use API calls to push changes to a remote or a local system. Yet those API calls might be triggered by a Puppet Agent that pulls it configurations from a puppetserver.
+
+
+
